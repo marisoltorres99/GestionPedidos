@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestionPedidos.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,12 @@ namespace GestionPedidos.Model
         public decimal MontoBase { get; set; }
         public TiposDeEnvio TipoEnvio { get; set; }
         public DateTime Fecha { get; set; }
+
+        public decimal CalcularMontoTotal()
+        {
+            var calculador = CalculadorEnvioFactory.ObtenerCalculador(TipoEnvio);
+            return calculador.CalcularCostoEnvio(MontoBase);
+        }
     }
 
     public enum TiposDeEnvio
