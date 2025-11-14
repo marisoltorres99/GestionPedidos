@@ -5,7 +5,7 @@ namespace GestionPedidos.Services
 {
     public class GestionarPedidos
     {
-        public List<PedidoConCliente> ObtenerPedidosConClientes()
+        public List<PedidosAgrupadosPorCliente> ObtenerPedidosAgrupados()
         {
             var ca = new CargarArchivosCSV();
             var clientes = ca.CargarClientes();
@@ -24,7 +24,17 @@ namespace GestionPedidos.Services
                                           MontoTotal = p.CalcularMontoTotal()
                                       }).ToList();
 
-            return pedidosConClientes;
+            var pedidosAgrupados = (from pc in pedidosConClientes
+                                    group pc by new { pc.NombreCliente, pc.Email } into grupo
+                                    select new PedidosAgrupadosPorCliente
+                                    {
+                                        NombreCliente = grupo.Key.NombreCliente,
+                                        Email = grupo.Key.Email,
+                                        TotalPedidos = grupo.Count(),
+                                        TotalFacturado = grupo.Sum(p => p.MontoTotal),
+                                    }).ToList();
+
+            return pedidosAgrupados;
 
         }
     }

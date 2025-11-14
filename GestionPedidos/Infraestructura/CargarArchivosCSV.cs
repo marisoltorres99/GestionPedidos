@@ -1,4 +1,5 @@
 ﻿using GestionPedidos.Model;
+using System.Globalization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GestionPedidos.Infraestructura
@@ -45,7 +46,7 @@ namespace GestionPedidos.Infraestructura
                     {
                         IdPedido = int.Parse(partes[0]),
                         IdCliente = int.Parse(partes[1]),
-                        MontoBase = decimal.Parse(partes[2]),
+                        MontoBase = decimal.Parse(partes[2], CultureInfo.InvariantCulture),
                         TipoEnvio = Enum.Parse<TiposDeEnvio>(partes[3], ignoreCase: true),
                         Fecha = DateTime.Parse(partes[4])
                     };
